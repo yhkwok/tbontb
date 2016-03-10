@@ -1,0 +1,60 @@
+Pages:
+	Login:
+		username 
+		password
+		Authenticate against User DB
+	SignUp:
+		Username
+		password
+		email
+		Create user in DB
+	ManageFriends:
+		freindID/Email?
+		Validate against DB
+	CreatePoll
+		add new item (defaults to two)
+			FindItem	??? not sure how to do this yet, perhaps be lazy and use the amazon product id, which is unique and requires no set up.
+				set price
+				set image
+				set description
+			leave a comment
+			set endtime (based on current time + poll lifespan)
+	Vote on poll
+		pull UserPollItems from DB
+		display data for items
+		place vote and submit
+	view results
+		pull UserPollItems from DB
+		display data for items
+		create link to amazon to buy -  no auto login initially. anyone can use. 
+	
+		
+		
+
+Tables:
+	Users: 
+		id
+		username
+		password(HASHED)
+		email
+		
+		//maybe skip that
+	Friends:
+		id
+		userId
+		friendID
+	
+	UserPolls:
+		id
+		creatorUserId
+		endTime
+		
+	UserPollItems:
+		id
+		userPollId  //many to one relationship as the comments and score are unique even ammong the same amazon item
+		price
+		description
+		imageLink
+		comments
+		score (Default 0)
+		
