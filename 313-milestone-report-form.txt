@@ -1,0 +1,24 @@
+After completing the assignment, please answer the questions in this text file and submit it to I-Learn.
+
+1. Project Title / One sentence descpription:
+To Buy or Not To Buy
+
+2. Copy and paste the URL for your web application (if applicable):
+jjm-tbontb.rhcloud.com
+
+3. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/yhkwok/tbontb (nothing there yet)
+
+4. List what your planned Milestone accomplishments were (e.g. from your proposal).
+The plan was to develop the website. (Didn't happen)
+
+5. Describe what you have done this week, and how it meets, falls short of, or is different than your milestone, and why.
+We set up the Amazon product advertizing account, we also set up a share github and openshift account. 
+We also plan to individually work on the API, and website, so that we can get the API working next week.
+We change on our plan because you suggest us to work on the API first and the website last.
+
+6. If possible, describe what I can do to see evidence of your milestone (e.g., pages that show certain pieces working, etc.).
+nothing for now, mostly we are working on administrating stuffs this week.
+
+7. List plans for next week (and note if they are different than your original milestone plans for next week).
+Have all API working
