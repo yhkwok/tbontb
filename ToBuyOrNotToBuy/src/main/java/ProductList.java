@@ -18,6 +18,15 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class ProductList {
     private ArrayList<Product> products;
+    private String PollName;
+
+    public String getPollName() {
+        return PollName;
+    }
+
+    public void setPollName(String PollName) {
+        this.PollName = PollName;
+    }
 
     public ArrayList<Product> getProducts() {
         return products;

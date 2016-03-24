@@ -54,6 +54,14 @@
                         </tr>
                         <tr>
                             <td>
+                                Image
+                            </td>
+                            <td>
+                                <img src="${ProductInfo.getThumbImageURL()}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 Add to Poll: 
                             </td>
                             <td>

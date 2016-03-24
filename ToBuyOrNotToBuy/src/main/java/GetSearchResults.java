@@ -38,17 +38,20 @@ public class GetSearchResults extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        
+        String SelectedSearchResults = "";
+        try 
+        {
             
             String query =  request.getParameter("SearchString").replace(' ', '+');
-            String SelectedSearchResults = StringEscapeUtils.escapeHtml4(request.getParameter("SelectedSearchResults"));
+            SelectedSearchResults = StringEscapeUtils.escapeHtml4(request.getParameter("SelectedSearchResults"));
             System.out.println("GSR: "+ SelectedSearchResults);
             //String 
             //List<String> items = (List<String>)request.getAttribute("SelectedResults");
-           
+            
+            
             URL url = new URL("http://api.walmartlabs.com/v1/search?"
-                    + "apiKey=pqeub2vpccznk89myanw2qbf&query=" + query);
-
+                + "apiKey=pqeub2vpccznk89myanw2qbf&query=" + query);
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> map = mapper.readValue(url, Map.class);
             
@@ -70,7 +73,13 @@ public class GetSearchResults extends HttpServlet {
             request.setAttribute("Products",products);
             request.setAttribute("SelectedSearchResults", SelectedSearchResults);
             request.getRequestDispatcher("ProductForm.jsp").forward(request, response);
-    }
+        }
+        catch (Exception ex)
+            {
+                request.setAttribute("GoodSearch", "false");
+                request.setAttribute("SelectedSearchResults", SelectedSearchResults);
+                request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

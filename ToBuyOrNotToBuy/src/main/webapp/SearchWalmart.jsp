@@ -18,5 +18,8 @@
             Enter Search: <input type="text" name="SearchString"/>
             <input type="submit" name="submit">
         </form>
+            <c:if test="<%= request.getParameter("SelectedSearchResults") == "false" %>">
+                No Results Found
+            </c:if>
     </body>
 </html>

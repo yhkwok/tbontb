@@ -43,13 +43,17 @@ public class AddPollToDB extends HttpServlet {
             out.println("<title>Servlet AddPollToDB</title>");            
             out.println("</head>");
             out.println("<body>");
+            
+            out.println("ADD ME TO DB(PollName): " + selectedItems.getPollName() + "</br>");
             for (Product p : selectedItems.getProducts())
             {
-                out.println("ADD ME TO DB: " + p.getName() + "</br>");
-                out.println("ADD ME TO DB: " + p.getCost()+ "</br>");
-                out.println("ADD ME TO DB: " + p.getDescription()+ "</br>");
-                out.println("ADD ME TO DB: " + p.getImageURL()+ "</br>");
-                out.println("ADD ME TO DB: " + p.getBuyURL()+ "</br>");
+                out.println("<div>");
+                out.println("ADD ME TO DB(Name): " + p.getName() + "</br>");
+                out.println("ADD ME TO DB(Cost): " + p.getCost()+ "</br>");
+                out.println("ADD ME TO DB(Desc): " + p.getDescription()+ "</br>");
+                out.println("ADD ME TO DB(ImgUrl): " + p.getImageURL()+ "</br>");
+                out.println("ADD ME TO DB(BuyUrl) " + p.getBuyURL()+ "</br>");
+                out.println("</div><br/><br/>");
                 //comment
             }
             out.println("</body>");

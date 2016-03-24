@@ -20,6 +20,7 @@ public class Product {
     
     private String BuyURL;
     private String ImageURL;
+    private String ThumbImageURL;
     private String Description;
     private String Name;
     private String Cost;
@@ -66,11 +67,20 @@ public class Product {
         //set the image url
         try
         {
-            this.ImageURL = map.get("largeImage").toString();
+            this.ImageURL = map.get("mediumImage").toString();
         }
         catch (Exception ex)
         {
             this.ImageURL = "";
+        }
+        //set the image url
+        try
+        {
+            this.ThumbImageURL = map.get("thumbnailImage").toString();
+        }
+        catch (Exception ex)
+        {
+            this.ThumbImageURL = "";
         }
         //set the name
         try
@@ -101,7 +111,8 @@ public class Product {
         try {
             map = mapper.readValue(json, Map.class);
             this.BuyURL = map.get("productUrl").toString();
-            this.ImageURL = map.get("largeImage").toString();
+            this.ImageURL = map.get("mediumImage").toString();
+            this.ThumbImageURL = map.get("thumbnailImage").toString();
             this.Description = map.get("shortDescription").toString();
             this.Name = map.get("name").toString();
             //if cost is null replace with the string Unknown
@@ -110,6 +121,7 @@ public class Product {
         } catch (IOException ex) {
             this.BuyURL = "";
             this.ImageURL = "";
+            this.ThumbImageURL = "";
             this.Description = "";
             this.Name = "Error Loading";
             //if cost is null replace with the string Unknown
@@ -177,6 +189,14 @@ public class Product {
     public void setCost(String Cost) {
         this.Cost = Cost;
     }
+
+    public String getThumbImageURL() {
+        return ThumbImageURL;
+    }
+
+    public void setThumbImageURL(String ThumbImageURL) {
+        this.ThumbImageURL = ThumbImageURL;
+    }
     
     public String getJson()
     {
@@ -184,7 +204,8 @@ public class Product {
                 + "&quot;shortDescription&quot;:&quot;" + this.Description +  "&quot;,"
                 + "&quot;salePrice&quot;:&quot;" + this.Cost +  "&quot;,"
                 + "&quot;productUrl&quot;:&quot;" + this.BuyURL +  "&quot;,"
-                + "&quot;largeImage&quot;:&quot; "+  this.ImageURL + "&quot;}";
+                + "&quot;thumbnailImage&quot;:&quot; "+  this.ThumbImageURL + "&quot;,"
+                + "&quot;mediumImage&quot;:&quot; "+  this.ImageURL + "&quot;}";
         return json;
     }
 }
