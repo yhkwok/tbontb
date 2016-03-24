@@ -14,9 +14,9 @@
     <body>
         <h1>Walmart Search</h1>
         <form action="GetSearchResults" method="POST">
-            <input type="hidden" value="<%= request.getParameter("SearchResults")%>" name ="SearchResults">
+            <input type="hidden" value="<%= request.getParameter("SelectedSearchResults")%>" name ="SelectedSearchResults">
             Enter Search: <input type="text" name="SearchString"/>
-            <input type="submit" name="Go">
+            <input type="submit" name="submit">
         </form>
     </body>
 </html>

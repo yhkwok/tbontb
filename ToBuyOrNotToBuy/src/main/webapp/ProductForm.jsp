@@ -14,7 +14,7 @@
     </head>
     <body>
         <form action="DisplaySelected" method="POST">
-            <input type="hidden" name="myObject" value="This is a list!!!" />
+            <input type="hidden" name="SelectedSearchResults" value="${SelectedSearchResults}" />
             <table>
                 <thead>
                     <tr>

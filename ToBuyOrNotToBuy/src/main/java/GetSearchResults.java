@@ -41,7 +41,8 @@ public class GetSearchResults extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String query =  request.getParameter("SearchString").replace(' ', '+');
-            System.out.print(query);
+            String SelectedSearchResults = StringEscapeUtils.escapeHtml4(request.getParameter("SelectedSearchResults"));
+            System.out.println("GSR: "+ SelectedSearchResults);
             //String 
             //List<String> items = (List<String>)request.getAttribute("SelectedResults");
            
@@ -54,7 +55,6 @@ public class GetSearchResults extends HttpServlet {
             //com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.util.LinkedHashMap out of START_ARRAY token
             //Map<String, Object> map2 = mapper.readValue(map.get("items").toString(), Map.class);
             ArrayList map2 = (ArrayList) map.get("items");
-            System.out.println(map2.size());
             List<Product> products = new ArrayList<Product>();
             for (Object obj : map2)
             {
@@ -68,6 +68,7 @@ public class GetSearchResults extends HttpServlet {
             pl.setProducts(j);
             
             request.setAttribute("Products",products);
+            request.setAttribute("SelectedSearchResults", SelectedSearchResults);
             request.getRequestDispatcher("ProductForm.jsp").forward(request, response);
     }
     }

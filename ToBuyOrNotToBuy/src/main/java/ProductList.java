@@ -30,28 +30,47 @@ public class ProductList {
         //1 minus length to handle the last object not having a comma
         for (int i = 0; i < length - 1; i++)
         {
-            json.concat(this.products.get(i).getJson() + ",");
+            json = json.concat(this.products.get(i).getJson().concat(","));
+            
         }
-        json.concat(this.products.get(length - 1).getJson() + "]}");
-        return json;
+        
+        
+        json = json.concat(this.products.get(length - 1).getJson().concat("]}"));
+        return StringEscapeUtils.escapeHtml4(json);
     }
 
     public void setProducts(String json)
     {
-        json = StringEscapeUtils.unescapeHtml4(json);
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> map;
-        try {
-            map = mapper.readValue(json, Map.class);
-            ArrayList<LinkedHashMap> productsList = (ArrayList<LinkedHashMap>)map.get("list");
+        System.out.println("PRODUCTLIST JSON: " + json);
+        if (json == null)
+        {
+            //do nothing...
+            System.out.print("in if");
+        }
+        else if (json.equals("") || json.equals("null"))
+        {
             
-            for (LinkedHashMap productMap : productsList)
-            {
-                Product p = new Product(productMap);
-                this.products.add(p);
-            }           
-        } catch (IOException ex) {
-            System.out.println("ERROR");
+            System.out.print("in elif");
+            //still do nothing...
+        }
+        else
+        {
+            System.out.print("in else");
+            json = StringEscapeUtils.unescapeHtml4(json);
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> map;
+            try {
+                map = mapper.readValue(json, Map.class);
+                ArrayList<LinkedHashMap> productsList = (ArrayList<LinkedHashMap>)map.get("list");
+
+                for (LinkedHashMap productMap : productsList)
+                {
+                    Product p = new Product(productMap);
+                    this.products.add(p);
+                }           
+            } catch (IOException ex) {
+                System.out.println("ERROR");
+            }
         }
     }
     

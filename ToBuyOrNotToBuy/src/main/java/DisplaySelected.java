@@ -37,25 +37,16 @@ public class DisplaySelected extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             
+            String SelectedSearchResults = request.getParameter("SelectedSearchResults");
+            ProductList selectedItems = new ProductList(SelectedSearchResults);
+            
             String json = request.getParameter("submit");
-            Set<String> map = request.getParameterMap().keySet();
-            for (String s : map)
-            {
-                
-            System.out.println(request.getParameter(s));
-            }
+            selectedItems.addProduct(json);
             
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DisplaySelected</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("?"+json+"?");
-            System.out.println("?"+json+"?");
-            out.println("</body>");
-            out.println("</html>");
+            request.setAttribute("Products", selectedItems.getProducts());
+            request.setAttribute("SelectedSearchResults", selectedItems.getProductsAsJson());
+            request.getRequestDispatcher("VerifyPoll.jsp").forward(request, response);
+           
         }
     }
 
