@@ -50,9 +50,23 @@ public class AddPollToDB extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
-            String URL = "jdbc:mysql://localhost/tbontb"; //<--change database name
-            String USER = "root";
-            String PASS = "";
+            String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+            
+            String URL;
+            String USER;
+            String PASS;
+            if(host == null || host == ""){
+                URL = "jdbc:mysql://localhost/tbontb"; //<--change database name
+                USER = "root";
+                PASS = "";
+            }
+            else{
+                String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+                URL = "jdbc:mysql://" + host + ":" + port + "/tbontb";
+                USER = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+                PASS = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+            }
+                        
             Connection conn = null;
             Statement stmt = null;
             try {
