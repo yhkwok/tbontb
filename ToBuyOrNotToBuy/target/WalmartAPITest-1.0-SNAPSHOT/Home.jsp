@@ -15,7 +15,8 @@
         <h1>Home Page</h1>
         <form action="SearchWalmart.jsp" method="POST">
             <input type="hidden" name="GoodSearch" value="true"/>
-            <button type="submit" value="" name="SelectedSearchResults">Create a New Poll</button>
+            <input type="hidden" name="PollName" value="true"/>
+            <button type="submit" value="asdf" name="SelectedSearchResults">Create a New Poll</button>
         </form>
     </body>
 </html>
