@@ -19,12 +19,14 @@ CREATE TABLE Friends
 CREATE TABLE UserPolls
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    creatorUserID INT NOT NULL
+    creatorUserID INT NOT NULL,
+	pollName TEXT NOT NULL
  );
 
 CREATE TABLE UserPollItems
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
     userPollID INT NOT NULL,
     price VARCHAR(10) NOT NULL,
     description TEXT NOT NULL,

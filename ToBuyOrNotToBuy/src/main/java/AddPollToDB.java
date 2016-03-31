@@ -69,17 +69,18 @@ public class AddPollToDB extends HttpServlet {
                 if(conn == null)
                     System.out.println("NULL\n");
                 stmt = conn.createStatement();
-                String sql = "INSERT INTO UserPolls(creatorUserID, pollName) VALUES "
-                        + "(1, " + selectedItems.getPollName() + ")";
+                String sql = "INSERT INTO userPolls(creatorUserID, pollName) VALUES "
+                        + "(1, '" + selectedItems.getPollName() + "')";
                 //execute and get last insert id
                 pollID = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
                 
                 for (Product p : selectedItems.getProducts())
                 {
-                     sql = "INSERT INTO UserPollItems(name, userPollID, price, description, imageLink, buyLink) VALUES "
-                            + "(" + p.getName() + ", " + pollID + ", " + 
-                             p.getCost() + ", " + p.getDescription() + ", " + 
-                             p.getImageURL() + ", " + p.getBuyURL() + ")";
+                     sql = "INSERT INTO userPollItems(name, userPollID, price, description, imageLink, buyLink, score) VALUES "
+                            + "('" + p.getName() + "', " + pollID + ", '" + 
+                             p.getCost() + "', '" + p.getDescription() + "', '" + 
+                             p.getImageURL() + "', '" + p.getBuyURL() + "', " + 0 +")";
+                    //sql = "INSERT INTO userPollItems"
                     stmt.executeUpdate(sql);
                 }
                 
