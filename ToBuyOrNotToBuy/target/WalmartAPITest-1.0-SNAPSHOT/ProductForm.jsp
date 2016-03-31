@@ -25,7 +25,7 @@
                             Value
                         </td>
                     </tr>
-                </thead>
+                </thead>zz
                 <tbody >
                     <c:forEach items="${Products}" var="ProductInfo">
                         <tr >

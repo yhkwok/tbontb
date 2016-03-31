@@ -38,6 +38,8 @@ public class DisplaySelected extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             
             String SelectedSearchResults = request.getParameter("SelectedSearchResults");
+            
+            System.out.print(SelectedSearchResults);
             ProductList selectedItems = new ProductList(SelectedSearchResults);
             
             String json = request.getParameter("submit");

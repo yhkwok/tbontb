@@ -25,6 +25,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 @WebServlet(urlPatterns = {"/GetSearchResults"})
 public class GetSearchResults extends HttpServlet {
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,8 +57,6 @@ public class GetSearchResults extends HttpServlet {
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> map = mapper.readValue(url, Map.class);
             
-            //com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.util.LinkedHashMap out of START_ARRAY token
-            //Map<String, Object> map2 = mapper.readValue(map.get("items").toString(), Map.class);
             ArrayList map2 = (ArrayList) map.get("items");
             List<Product> products = new ArrayList<Product>();
             for (Object obj : map2)
@@ -75,11 +75,11 @@ public class GetSearchResults extends HttpServlet {
             request.getRequestDispatcher("ProductForm.jsp").forward(request, response);
         }
         catch (Exception ex)
-            {
-                request.setAttribute("GoodSearch", "false");
-                request.setAttribute("SelectedSearchResults", SelectedSearchResults);
-                request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
-            }
+        {
+            request.setAttribute("GoodSearch", "false");
+            request.setAttribute("SelectedSearchResults", SelectedSearchResults);
+            request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
