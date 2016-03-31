@@ -5,11 +5,13 @@
  */
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,27 +38,18 @@ public class AddPollToDB extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
             
             String SelectedSearchResults = request.getParameter("SelectedSearchResults");
             ProductList selectedItems = new ProductList(SelectedSearchResults);
-            
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddPollToDB</title>");            
-            out.println("</head>");
-            out.println("<body>");
             
             String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
             
             String URL;
             String USER;
             String PASS;
+            int pollID;
             if(host == null || host == ""){
-                URL = "jdbc:mysql://localhost/tbontb"; //<--change database name
+                URL = "jdbc:mysql://localhost/tbontb";
                 USER = "root";
                 PASS = "";
             }
@@ -69,66 +62,48 @@ public class AddPollToDB extends HttpServlet {
                         
             Connection conn = null;
             Statement stmt = null;
+            
             try {
-                //STEP 2: Register JDBC driver
                 Class.forName("com.mysql.jdbc.Driver");
-
-                //STEP 3: Open a connection
-                System.out.println("Connecting to a selected database...");
                 conn = DriverManager.getConnection(URL, USER, PASS);
-                System.out.println("Connected database successfully...");
-                
-                 //STEP 4: Execute a query
-                System.out.println("Creating statement...");
+                if(conn == null)
+                    System.out.println("NULL\n");
                 stmt = conn.createStatement();
-                
-                out.println("ADD ME TO DB(PollName): " + selectedItems.getPollName() + "</br>");
-
-                String sql = "Insert INTO UserPolls(creatorUserID, pollName) VALUES "
+                String sql = "INSERT INTO UserPolls(creatorUserID, pollName) VALUES "
                         + "(1, " + selectedItems.getPollName() + ")";
                 //execute and get last insert id
-                int pollID = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-                
-                
+                pollID = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
                 
                 for (Product p : selectedItems.getProducts())
                 {
-                    out.println("<div>");
-                    out.println("ADD ME TO DB(Name): " + p.getName() + "</br>");
-                    out.println("ADD ME TO DB(Cost): " + p.getCost()+ "</br>");
-                    out.println("ADD ME TO DB(Desc): " + p.getDescription()+ "</br>");
-                    out.println("ADD ME TO DB(ImgUrl): " + p.getImageURL()+ "</br>");
-                    out.println("ADD ME TO DB(BuyUrl) " + p.getBuyURL()+ "</br>");
-                    out.println("</div><br/><br/>");
-                    //comment
-                
-                     sql = "Insert INTO UserPollItems(name, userPollID, price, description, imageLink, buyLink) VALUES "
+                     sql = "INSERT INTO UserPollItems(name, userPollID, price, description, imageLink, buyLink) VALUES "
                             + "(" + p.getName() + ", " + pollID + ", " + 
                              p.getCost() + ", " + p.getDescription() + ", " + 
                              p.getImageURL() + ", " + p.getBuyURL() + ")";
-                    stmt.executeQuery(sql);
+                    stmt.executeUpdate(sql);
                 }
-            } catch (SQLException | ClassNotFoundException se) {
+                
+                stmt.close();
+                conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             } finally {
-                //finally block used to close resources
                 try {
-                    if (stmt != null) {
-                        conn.close();
-                    }
-                } catch (SQLException se) {
-                }// do nothing
+                    if (stmt != null)
+                        stmt.close();
+                } catch (SQLException se2) {
+                }
                 try {
-                    if (conn != null) {
+                    if (conn != null)
                         conn.close();
-                    }
                 } catch (SQLException se) {
-                }//end finally try
-            }//end try
-            
-            out.println("</body>");
-            out.println("</html>");
-        }
+                    se.printStackTrace();
+                }
+            }        
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -142,7 +117,13 @@ public class AddPollToDB extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddPollToDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddPollToDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -156,7 +137,13 @@ public class AddPollToDB extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddPollToDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddPollToDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

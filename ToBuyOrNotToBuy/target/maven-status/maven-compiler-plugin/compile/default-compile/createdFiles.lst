@@ -1,1 +1,5 @@
 GetSearchResults.class
+Product.class
+AddPollToDB.class
+DisplaySelected.class
+ProductList.class
