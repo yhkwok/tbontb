@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>WeDefineWords</title>
+    <title>Team Project</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -39,12 +39,12 @@
   ga('send', 'pageview');
 
 </script>    <div class="container">
-      <form class="form-signin" action="#" method="POST">
+      <form class="form-signin" action="AuthenticateLogin" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="e-mail" class="sr-only">Email address</label>
-        <input type="email" id="e-mail" name="e-mail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="userName" class="sr-only">username</label>
+        <input type="text" id="userName" name="userName" class="form-control" placeholder="UserName" required autofocus>
         <label for="Password" class="sr-only">Password</label>
-        <input type="password" id="Password" name="Password" class="form-control" placeholder="Password" required>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> Remember me
