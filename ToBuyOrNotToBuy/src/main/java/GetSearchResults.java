@@ -83,8 +83,6 @@ public class GetSearchResults extends HttpServlet {
         }
         catch (Exception ex)
         {
-            System.out.print(ex.getMessage());
-            request.setAttribute("GoodSearch", "false");
             request.setAttribute("SelectedSearchResults", SelectedSearchResults);
             request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
         }
