@@ -34,8 +34,7 @@ public class ProductList {
     
     public String getProductsAsJson()
     {
-        String json = "{&quot;pollName&quot;&quot;" + this.PollName + 
-                "&quot;,&quot;list&quot;:[";
+        String json = "{&quot;list&quot;:[";
         int length = this.products.size();
         //1 minus length to handle the last object not having a comma
         for (int i = 0; i < length - 1; i++)
@@ -65,14 +64,6 @@ public class ProductList {
             Map<String, Object> map;
             try {
                 map = mapper.readValue(json, Map.class);
-                try
-                {
-                    this.PollName = map.get("pollName").toString();
-                }
-                catch (Exception ex)
-                {
-                    this.PollName = "Error with poll Name json conversion";
-                }
                 ArrayList<LinkedHashMap> productsList = (ArrayList<LinkedHashMap>)map.get("list");
 
                 for (LinkedHashMap productMap : productsList)

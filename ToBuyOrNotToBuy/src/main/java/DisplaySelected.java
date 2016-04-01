@@ -38,14 +38,15 @@ public class DisplaySelected extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             
             String SelectedSearchResults = request.getParameter("SelectedSearchResults");
+            String PollName = request.getParameter("PollName");
             
-            System.out.print(SelectedSearchResults);
             ProductList selectedItems = new ProductList(SelectedSearchResults);
             
             String json = request.getParameter("submit");
             selectedItems.addProduct(json);
             
             request.setAttribute("Products", selectedItems.getProducts());
+            request.setAttribute("PollName", PollName);
             request.setAttribute("SelectedSearchResults", selectedItems.getProductsAsJson());
             request.getRequestDispatcher("VerifyPoll.jsp").forward(request, response);
            

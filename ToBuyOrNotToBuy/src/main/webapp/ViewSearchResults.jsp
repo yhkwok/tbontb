@@ -15,7 +15,9 @@
     <body>
         <h1>Poll: <c:out value="${param.PollName}"/></h1>
         <form action="DisplaySelected" method="POST">
-            <input type="hidden" name="SelectedSearchResults" value="${SelectedSearchResults}" />
+            
+            <input type="hidden" name="PollName" value="${param.PollName}" />
+            <input type="hidden" name="SelectedSearchResults" value="${param.SelectedSearchResults}" />
             <table>
                 <thead>
                     <tr>
@@ -26,7 +28,7 @@
                             Value
                         </td>
                     </tr>
-                </thead>zz
+                </thead>
                 <tbody >
                     <c:forEach items="${Products}" var="ProductInfo">
                         <tr >
@@ -80,6 +82,11 @@
                     </c:forEach>
                 </tbody>
             </table>
+        </form>
+        <form action="SearchWalmart.jsp" method="POST">
+            <input type="hidden" name="PollName" value="${param.PollName}"/>
+            <input type="hidden" name="SelectedSearchResults" value="${param.SelectedSearchResults}" />
+            <button type="submit" value="submit">Add Another Item</button>
         </form>
     </body>
 </html>

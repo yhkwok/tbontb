@@ -38,7 +38,7 @@ public class SearchWalmart extends HttpServlet {
         
         request.setAttribute("SelectedSearchResults", selectedSearchResults);
         request.setAttribute("GoodSearch", "True");
-        System.out.print(pollName);
+        
         request.setAttribute("PollName", pollName);
         request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
     }
