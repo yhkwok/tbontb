@@ -34,3 +34,5 @@ CREATE TABLE UserPollItems
     buyLink TEXT NOT NULL,
     score INT DEFAULT 0
 );
+
+ALTER TABLE friends ADD COLUMN 'friendName' VARCHAR(100);
