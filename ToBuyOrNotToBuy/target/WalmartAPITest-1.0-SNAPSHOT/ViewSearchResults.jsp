@@ -13,6 +13,7 @@
         <title>Product Form</title>
     </head>
     <body>
+        <h1>Poll: <c:out value="${param.PollName}"/></h1>
         <form action="DisplaySelected" method="POST">
             <input type="hidden" name="SelectedSearchResults" value="${SelectedSearchResults}" />
             <table>

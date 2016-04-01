@@ -43,9 +43,10 @@ public class GetSearchResults extends HttpServlet {
         
         String SelectedSearchResults = "";
         String query = "";
+        String pollName = "";
         try 
         {
-            
+            pollName = request.getParameter("PollName");
             query =  request.getParameter("SearchString").replace(' ', '+');
             SelectedSearchResults = StringEscapeUtils.escapeHtml4(request.getParameter("SelectedSearchResults"));
             System.out.println("GSR: "+ SelectedSearchResults);
@@ -56,33 +57,35 @@ public class GetSearchResults extends HttpServlet {
             
             URL url = new URL("http://api.walmartlabs.com/v1/search?"
                 + "apiKey=pqeub2vpccznk89myanw2qbf&query=" + query);
-            System.out.print("a");
-            ObjectMapper mapper = new ObjectMapper();
-            System.out.print("a");
-            Map<String, Object> map = mapper.readValue(url, Map.class);
-            System.out.print("a");
             
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> map = mapper.readValue(url, Map.class);
+            
+            map.toString();
             ArrayList map2 = (ArrayList) map.get("items");
             List<Product> products = new ArrayList<Product>();
+            
             for (Object obj : map2)
-            {
+            {      
                 LinkedHashMap item =  (LinkedHashMap) obj;
                 Product product = new Product(item);
                 products.add(product);
             }
             
-            System.out.print("b");
             String j = "{\"list\":["+products.get(0).getJson()+"]}";
             ProductList pl = new ProductList();
             pl.setProducts(j);
             
-            System.out.print("c");
             request.setAttribute("Products",products);
             request.setAttribute("SelectedSearchResults", SelectedSearchResults);
-            request.getRequestDispatcher("ProductForm.jsp").forward(request, response);
+            request.getRequestDispatcher("ViewSearchResults.jsp").forward(request, response);
         }
         catch (Exception ex)
         {
+            
+            request.setAttribute("GoodSearch", "False");
+            request.setAttribute("PollName", pollName);
+            System.out.print(pollName);
             request.setAttribute("SelectedSearchResults", SelectedSearchResults);
             request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
         }

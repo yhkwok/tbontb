@@ -16,7 +16,7 @@
         <h1>Poll: <c:out value="${param.PollName}"/></h1>
         <form action="GetSearchResults" method="POST">
             <input type="hidden" value="${param.SelectedSearchResults}" name ="SelectedSearchResults">
-            <input type="hidden" value="${param.PollName}" name ="SelectedSearchResults">
+            <input type="hidden" value="${param.PollName}" name ="PollName">
             
             Enter Search: <input type="text" name="SearchString"/>
             <br/>
