@@ -6,6 +6,10 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,6 +36,58 @@ public class removeFriend extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        
+        String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+            
+            String URL;
+            String USER;
+            String PASS;
+            int pollID;
+            if(host == null || host == ""){
+                URL = "jdbc:mysql://localhost/tbontb";
+                USER = "root";
+                PASS = "";
+            }
+            else{
+                String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+                URL = "jdbc:mysql://" + host + ":" + port + "/tbontb";
+                USER = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+                PASS = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+            }
+                        
+            Connection conn = null;
+            Statement stmt = null;
+            
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(URL, USER, PASS);
+                if(conn == null)
+                    System.out.println("NULL\n");
+                stmt = conn.createStatement();
+                
+                String sql = "delete from friends where userID = '" + currentUserID + "', friendEmail = '" + friendEmail + "', friendName = '" + friendName + "'";
+                //execute
+                stmt.executeUpdate(sql);
+                
+                stmt.close();
+                conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (stmt != null)
+                        stmt.close();
+                } catch (SQLException se2) {
+                }
+                try {
+                    if (conn != null)
+                        conn.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
