@@ -5,13 +5,21 @@
  */
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +48,8 @@ public class AddPollToDB extends HttpServlet {
             throws ServletException, IOException, SQLException, ClassNotFoundException {
             
             String SelectedSearchResults = request.getParameter("SelectedSearchResults");
+            //get current user id
+            
             ProductList selectedItems = new ProductList(SelectedSearchResults);
             
             String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
@@ -49,6 +59,7 @@ public class AddPollToDB extends HttpServlet {
             String PASS;
             int pollID;
             if(host == null || host == ""){
+                host = "localhost";
                 URL = "jdbc:mysql://localhost/tbontb";
                 USER = "root";
                 PASS = "";
@@ -83,6 +94,65 @@ public class AddPollToDB extends HttpServlet {
                     //sql = "INSERT INTO userPollItems"
                     stmt.executeUpdate(sql);
                 }
+                //send emails:
+                //get email addresses
+                //get pollID to create the URL to send
+                //get current user id
+                
+                sql = "SELECT friendEmail FROM Friends where userID = 1";//<-- user id
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    // Recipient's email ID needs to be mentioned.
+                    String to = rs.getString("friendEmail");
+                    
+                    // Sender's email ID needs to be mentioned
+                    String from = "tbontb@byui.edu";//<-- our email address
+  
+                    // Get system properties
+                    Properties properties = System.getProperties();
+ 
+                    // Setup mail server
+                    properties.setProperty("mail.smtp.host", host);
+ 
+                    // Get the default Session object.
+                    Session session = Session.getDefaultInstance(properties);
+                    
+                    // Set response content type
+                    response.setContentType("text/html");
+                    PrintWriter out = response.getWriter();
+
+                    try{
+                        // Create a default MimeMessage object.
+                        MimeMessage message = new MimeMessage(session);
+                        // Set From: header field of the header.
+                        message.setFrom(new InternetAddress(from));
+                        // Set To: header field of the header.
+                        message.addRecipient(Message.RecipientType.TO,
+                                                new InternetAddress(to));
+                        // Set Subject: header field
+                        message.setSubject("You are invited to VOTE!!");
+                        
+                        // Send the actual HTML message, as big as you like
+                        message.setContent("<a href=\"\">Vote Now!</a>",
+                                            "text/html" ); // <-- I need the created URL here!!
+                        // Send message
+                        Transport.send(message);
+                        String title = "Send Email";
+                        String res = "Sent message successfully....";
+                        String docType =
+                        "<!doctype html public \"-//w3c//dtd html 4.0 " +
+                        "transitional//en\">\n";
+                        out.println(docType +
+                        "<html>\n" +
+                        "<head><title>" + title + "</title></head>\n" +
+                        "<body bgcolor=\"#f0f0f0\">\n" +
+                        "<h1 align=\"center\">" + title + "</h1>\n" +
+                        "<p align=\"center\">" + res + "</p>\n" +
+                        "</body></html>");
+                    }catch (MessagingException mex) {
+                        mex.printStackTrace();
+                    }
+                }
                 
                 stmt.close();
                 conn.close();
@@ -103,6 +173,8 @@ public class AddPollToDB extends HttpServlet {
                     se.printStackTrace();
                 }
             }        
+            
+            //redirect to sendEmailsToFriends
     }
 
 
