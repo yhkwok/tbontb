@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -38,6 +39,12 @@ public class createUser extends HttpServlet {
         
         //get input from register JSP (username and password)
         
+        
+        String Name = request.getParameter("FriendName");
+        String Password = request.getParameter("FriendEmailAddress");
+        
+    
+        String hashed = BCrypt.hashpw(Password, BCrypt.gensalt());
         String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
             
             String URL;
@@ -67,9 +74,9 @@ public class createUser extends HttpServlet {
                     System.out.println("NULL\n");
                 stmt = conn.createStatement();
                 String sql = "INSERT INTO User(username, password) VALUES "
-                        + "('" + username + "', '" + password +"')";
+                        + "('" + Name + "', '" + hashed +"')";
                 //execute and get last insert id
-                currentUserID = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS); <--save it!!
+                int currentUserID = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);// <--save it!!
         stmt.close();
                 conn.close();
             } catch (SQLException se) {

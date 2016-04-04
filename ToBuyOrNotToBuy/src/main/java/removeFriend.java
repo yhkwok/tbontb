@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -36,6 +37,13 @@ public class removeFriend extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        
+        String friendName = request.getParameter("FriendName");
+        String friendEmailAddress = request.getParameter("FriendEmailAddress");
+        HttpSession session = request.getSession();
+        
+        
+        int userId = Integer.parseInt(session.getAttribute("userId").toString());
         
         String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
             
@@ -65,7 +73,9 @@ public class removeFriend extends HttpServlet {
                     System.out.println("NULL\n");
                 stmt = conn.createStatement();
                 
-                String sql = "delete from friends where userID = '" + currentUserID + "', friendEmail = '" + friendEmail + "', friendName = '" + friendName + "'";
+                String sql = "delete from friends where userID = " + userId 
+                        + " and friendEmail = '" + friendEmailAddress 
+                        + "' and friendName = '" + friendName + "'";
                 //execute
                 stmt.executeUpdate(sql);
                 

@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,6 +40,14 @@ public class addFriend extends HttpServlet {
         
         //get the current user's ID, email address of the friend, and name of the friend
         //by get parameter
+        
+        
+        
+        String friendName = request.getParameter("FriendName");
+        String friendEmailAddress = request.getParameter("FriendEmailAddress");
+        HttpSession session = request.getSession();
+        
+        int userId = Integer.parseInt(session.getAttribute("userId").toString());
         
         String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
             
@@ -68,7 +77,7 @@ public class addFriend extends HttpServlet {
                     System.out.println("NULL\n");
                 stmt = conn.createStatement();
                 String sql = "INSERT INTO friends(userID, friendEmail, friendName) VALUES "
-                        + "(1, '" + friendEmailAddress + "', '" + friendName + "')";
+                        + "(" + userId + ", '" + friendEmailAddress + "', '" + friendName + "')";
                 //execute and get last insert id
                 stmt.executeUpdate(sql);
                 
