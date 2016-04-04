@@ -67,8 +67,8 @@ public class addFriend extends HttpServlet {
                 if(conn == null)
                     System.out.println("NULL\n");
                 stmt = conn.createStatement();
-                String sql = "INSERT INTO userPolls(creatorUserID, pollName) VALUES "
-                        + "(1, '" + selectedItems.getPollName() + "')";
+                String sql = "INSERT INTO friends(userID, friendEmail, friendName) VALUES "
+                        + "(1, '" + friendEmailAddress + "', '" + friendName + "')";
                 //execute and get last insert id
                 stmt.executeUpdate(sql);
                 
