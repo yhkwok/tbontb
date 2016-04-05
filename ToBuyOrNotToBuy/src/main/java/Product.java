@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 public class Product {
     
+    
     private String BuyURL;
     private String ImageURL;
     private String ThumbImageURL;
@@ -28,11 +29,6 @@ public class Product {
     public int getVotes() {
         return votes;
     }
-    
-    private String fixJson(String json){
-        return json.replace('"', '\'');
-    }
-    
 
     public void setVotes(int votes) {
         this.votes = votes;
@@ -53,14 +49,14 @@ public class Product {
         //set the description
         try
         {
-            this.Description = fixJson(StringEscapeUtils.unescapeHtml4(map.get("shortDescription").toString()));
+            this.Description = StringEscapeUtils.unescapeHtml4(map.get("shortDescription").toString());
         }
         catch (Exception ex)
         {
             //thy the long description
             try
             {
-                this.Description = fixJson(StringEscapeUtils.unescapeHtml4(map.get("longDescription").toString()));
+                this.Description = StringEscapeUtils.unescapeHtml4(map.get("longDescription").toString());
             }
             catch (Exception innerEx)
             {
@@ -89,7 +85,7 @@ public class Product {
         //set the name
         try
         {
-            this.Name = fixJson(map.get("name").toString());
+            this.Name = map.get("name").toString();
         }
         catch (Exception ex)
         {
@@ -107,9 +103,9 @@ public class Product {
         this.votes = 0;
     }
     
-    public Product(String jsonEscaped)
+    public Product(String json)
     {
-        String json = StringEscapeUtils.unescapeHtml4(jsonEscaped);
+        
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> map;
         try {
@@ -123,8 +119,6 @@ public class Product {
             this.Cost = map.get("salePrice").toString();
             this.votes = 0;
         } catch (IOException ex) {
-            System.out.print("Error creating productclass.from" + json);
-            System.out.print(ex.getMessage());
             this.BuyURL = "";
             this.ImageURL = "";
             this.ThumbImageURL = "";
@@ -212,6 +206,6 @@ public class Product {
                 + "&quot;productUrl&quot;:&quot;" + this.BuyURL +  "&quot;,"
                 + "&quot;thumbnailImage&quot;:&quot; "+  this.ThumbImageURL + "&quot;,"
                 + "&quot;mediumImage&quot;:&quot; "+  this.ImageURL + "&quot;}";
-        return StringEscapeUtils.escapeHtml4(json);
+        return json;
     }
 }

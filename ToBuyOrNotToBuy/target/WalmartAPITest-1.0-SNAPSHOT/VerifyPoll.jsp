@@ -13,10 +13,8 @@
         <title>Product Form</title>
     </head>
     <body>
-        <h1>Poll: <c:out value="${param.PollName}"/></h1>
         <form action="AddPollToDB" method="POST">
-            <input type="hidden" name="PollName" value="${param.PollName}"/>
-            <input type="hidden" name="SelectedSearchResults" value="${param.SelectedSearchResults}" />
+            <input type="hidden" name="SelectedSearchResults" value="${SelectedSearchResults}" />
             <table>
                 <thead>
                     <tr>
@@ -75,8 +73,7 @@
             <button type="submit" value="submit">Create Poll</button>
         </form>
         <form action="SearchWalmart.jsp" method="POST">
-            <input type="hidden" name="PollName" value="${param.PollName}"/>
-            <input type="hidden" name="SelectedSearchResults" value="${param.SelectedSearchResults}" />
+            <input type="hidden" name="SelectedSearchResults" value="${SelectedSearchResults}" />
             <button type="submit" value="submit">Add Another Item</button>
         </form>
     </body>

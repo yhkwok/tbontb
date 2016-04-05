@@ -48,6 +48,8 @@ public class AddPollToDB extends HttpServlet {
             throws ServletException, IOException, SQLException, ClassNotFoundException {
             
             String SelectedSearchResults = request.getParameter("SelectedSearchResults");
+            System.out.print("Results: " + SelectedSearchResults);
+            String pollname = request.getParameter("PollName");
             //get current user id
             
             ProductList selectedItems = new ProductList(SelectedSearchResults);
@@ -81,12 +83,16 @@ public class AddPollToDB extends HttpServlet {
                     System.out.println("NULL\n");
                 stmt = conn.createStatement();
                 String sql = "INSERT INTO userPolls(creatorUserID, pollName) VALUES "
-                        + "(1, '" + selectedItems.getPollName() + "')";
+                        + "(1, '" + pollname + "')";
                 //execute and get last insert id
+                
                 pollID = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
                 
+                System.out.print(selectedItems.getProducts().size());
                 for (Product p : selectedItems.getProducts())
                 {
+                    
+                    System.out.println(p.getName());
                      sql = "INSERT INTO userPollItems(name, userPollID, price, description, imageLink, buyLink, score) VALUES "
                             + "('" + p.getName() + "', " + pollID + ", '" + 
                              p.getCost() + "', '" + p.getDescription() + "', '" + 
@@ -94,65 +100,7 @@ public class AddPollToDB extends HttpServlet {
                     //sql = "INSERT INTO userPollItems"
                     stmt.executeUpdate(sql);
                 }
-                //send emails:
-                //get email addresses
-                //get pollID to create the URL to send
-                //get current user id
                 
-                sql = "SELECT friendEmail FROM Friends where userID = 1";//<-- user id
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    // Recipient's email ID needs to be mentioned.
-                    String to = rs.getString("friendEmail");
-                    
-                    // Sender's email ID needs to be mentioned
-                    String from = "tbontb@byui.edu";//<-- our email address
-  
-                    // Get system properties
-                    Properties properties = System.getProperties();
- 
-                    // Setup mail server
-                    properties.setProperty("mail.smtp.host", host);
- 
-                    // Get the default Session object.
-                    Session session = Session.getDefaultInstance(properties);
-                    
-                    // Set response content type
-                    response.setContentType("text/html");
-                    PrintWriter out = response.getWriter();
-
-                    try{
-                        // Create a default MimeMessage object.
-                        MimeMessage message = new MimeMessage(session);
-                        // Set From: header field of the header.
-                        message.setFrom(new InternetAddress(from));
-                        // Set To: header field of the header.
-                        message.addRecipient(Message.RecipientType.TO,
-                                                new InternetAddress(to));
-                        // Set Subject: header field
-                        message.setSubject("You are invited to VOTE!!");
-                        
-                        // Send the actual HTML message, as big as you like
-                        message.setContent("<a href=\"\">Vote Now!</a>",
-                                            "text/html" ); // <-- I need the created URL here!!
-                        // Send message
-                        Transport.send(message);
-                        String title = "Send Email";
-                        String res = "Sent message successfully....";
-                        String docType =
-                        "<!doctype html public \"-//w3c//dtd html 4.0 " +
-                        "transitional//en\">\n";
-                        out.println(docType +
-                        "<html>\n" +
-                        "<head><title>" + title + "</title></head>\n" +
-                        "<body bgcolor=\"#f0f0f0\">\n" +
-                        "<h1 align=\"center\">" + title + "</h1>\n" +
-                        "<p align=\"center\">" + res + "</p>\n" +
-                        "</body></html>");
-                    }catch (MessagingException mex) {
-                        mex.printStackTrace();
-                    }
-                }
                 
                 stmt.close();
                 conn.close();

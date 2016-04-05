@@ -29,15 +29,11 @@
   </head>
   <body>
     <div class="container">
-      <form  action="register.php" method="POST" class="form-signin">
+      <form  action="createUser" method="POST" class="form-signin">
         <h2 class="form-signin-heading">New Account</h2>
-        <label for="name" class="sr-only">Name</label>
-        <input type="text" name="name" id="name" class="form-control" placeholder="Name" required>
-		<label for="userName" class="sr-only">User Name</label>
+        <label for="userName" class="sr-only">User Name</label>
         <input type="text"  name="userName" id="userName" class="form-control" placeholder="User Name" required>
-        <label for="e-mail" class="sr-only">Email Address</label>
-        <input type="text" name="e-mail" id="e-mail" class="form-control" placeholder="Email address" required>
-		<label for="password" class="sr-only">Password</label>
+       	<label for="password" class="sr-only">Password</label>
         <input type="password" name="Password" id="password" class="form-control" placeholder="Password" required>
 		<input type="hidden" name="formsubmitted" value="TRUE" />
 		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Register">

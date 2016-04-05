@@ -40,8 +40,8 @@ public class createUser extends HttpServlet {
         //get input from register JSP (username and password)
         
         
-        String Name = request.getParameter("FriendName");
-        String Password = request.getParameter("FriendEmailAddress");
+        String Name = request.getParameter("userName");
+        String Password = request.getParameter("Password");
         
     
         String hashed = BCrypt.hashpw(Password, BCrypt.gensalt());

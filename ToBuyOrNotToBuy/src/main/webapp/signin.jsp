@@ -39,7 +39,7 @@
   ga('send', 'pageview');
 
 </script>    <div class="container">
-      <form class="form-signin" action="AuthenticateLogin" method="POST">
+      <form class="form-signin" action="HomePage" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="userName" class="sr-only">username</label>
         <input type="text" id="userName" name="userName" class="form-control" placeholder="UserName" required autofocus>

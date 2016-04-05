@@ -6,6 +6,18 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,19 +46,66 @@ public class AuthenticateLogin extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String userName = request.getParameter("userName");
         String testpassword = request.getParameter("password");
-        
-        // Hash a password for the first time
-    String hashed = BCrypt.hashpw(testpassword, BCrypt.gensalt());
-
-    
-   String password = ""; //Add database access to get the password for "UserName" -> password
-    // Check that an unencrypted password matches one that has
-    // previously been hashed
-    if (BCrypt.checkpw(password, hashed))
-        System.out.println("It matches"); //add authenticate stuff
-    else
-        System.out.println("It does not match"); // redirect elsewhere
+     
+        String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+            
+        String hashed;
+            String URL;
+            String USER;
+            String PASS;
+            int pollID;
+            if(host == null || host == ""){
+                host = "localhost";
+                URL = "jdbc:mysql://localhost/tbontb";
+                USER = "root";
+                PASS = "";
+            }
+            else{
+                String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+                URL = "jdbc:mysql://" + host + ":" + port + "/tbontb";
+                USER = System.getenv("OPENSHIFT_MYSQL_DB_USERNAME");
+                PASS = System.getenv("OPENSHIFT_MYSQL_DB_PASSWORD");
+            }
+                        
+            Connection conn = null;
+            Statement stmt = null;
+            
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection(URL, USER, PASS);
+                if(conn == null)
+                    System.out.println("NULL\n");
+                stmt = conn.createStatement();
+                String sql = "SELECT password FROM User where username = 1";//<-- user id
+                ResultSet rs = stmt.executeQuery(sql);
+                
+                while (rs.next()) {
+                    hashed = rs.getString("password");
+                }
+                
+                stmt.close();
+                conn.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (stmt != null)
+                        stmt.close();
+                } catch (SQLException se2) {
+                }
+                try {
+                    if (conn != null)
+                        conn.close();
+                } catch (SQLException se) {
+                    se.printStackTrace();
+                }
+            }        
+            
+            //redirect to sendEmailsToFriends
     }
+ 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

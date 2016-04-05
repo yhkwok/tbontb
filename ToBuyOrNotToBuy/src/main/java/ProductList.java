@@ -42,23 +42,29 @@ public class ProductList {
             json = json.concat(this.products.get(i).getJson().concat(","));
             
         }
-        //handle the last product wihtout a comma, and close string
+        
+        
         json = json.concat(this.products.get(length - 1).getJson().concat("]}"));
         return StringEscapeUtils.escapeHtml4(json);
     }
 
     public void setProducts(String json)
     {
+        System.out.println("PRODUCTLIST JSON: " + json);
         if (json == null)
         {
             //do nothing...
+            System.out.print("in if");
         }
         else if (json.equals("") || json.equals("null"))
         {
+            
+            System.out.print("in elif");
             //still do nothing...
         }
         else
         {
+            System.out.print("in else");
             json = StringEscapeUtils.unescapeHtml4(json);
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> map;
@@ -72,7 +78,7 @@ public class ProductList {
                     this.products.add(p);
                 }           
             } catch (IOException ex) {
-                System.out.println("ERROR" + ex.getMessage());
+                System.out.println("ERROR");
             }
         }
     }
@@ -84,7 +90,6 @@ public class ProductList {
 
     public ProductList(String json) {
         products = new ArrayList<>();
-        this.PollName = "";
         this.setProducts(json);
     }
     public ProductList() {

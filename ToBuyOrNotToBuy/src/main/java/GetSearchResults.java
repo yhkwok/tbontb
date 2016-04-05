@@ -25,8 +25,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 @WebServlet(urlPatterns = {"/GetSearchResults"})
 public class GetSearchResults extends HttpServlet {
-    
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,26 +40,27 @@ public class GetSearchResults extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         String SelectedSearchResults = "";
-        String query = "";
-        String pollName = "";
         try 
         {
-            pollName = request.getParameter("PollName");
-            query =  request.getParameter("SearchString").replace(' ', '+');
+            
+            String query =  request.getParameter("SearchString").replace(' ', '+');
             SelectedSearchResults = StringEscapeUtils.escapeHtml4(request.getParameter("SelectedSearchResults"));
-                     
+            System.out.println("GSR: "+ SelectedSearchResults);
+            //String 
+            //List<String> items = (List<String>)request.getAttribute("SelectedResults");
+            
+            
             URL url = new URL("http://api.walmartlabs.com/v1/search?"
                 + "apiKey=pqeub2vpccznk89myanw2qbf&query=" + query);
-            
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> map = mapper.readValue(url, Map.class);
             
-            map.toString();
+            //com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of java.util.LinkedHashMap out of START_ARRAY token
+            //Map<String, Object> map2 = mapper.readValue(map.get("items").toString(), Map.class);
             ArrayList map2 = (ArrayList) map.get("items");
             List<Product> products = new ArrayList<Product>();
-            
             for (Object obj : map2)
-            {      
+            {
                 LinkedHashMap item =  (LinkedHashMap) obj;
                 Product product = new Product(item);
                 products.add(product);
@@ -73,17 +72,14 @@ public class GetSearchResults extends HttpServlet {
             
             request.setAttribute("Products",products);
             request.setAttribute("SelectedSearchResults", SelectedSearchResults);
-            request.getRequestDispatcher("ViewSearchResults.jsp").forward(request, response);
+            request.getRequestDispatcher("ProductForm.jsp").forward(request, response);
         }
         catch (Exception ex)
-        {
-            
-            request.setAttribute("GoodSearch", "False");
-            request.setAttribute("PollName", pollName);
-            request.setAttribute("SelectedSearchResults", SelectedSearchResults);
-            System.out.print(SelectedSearchResults);
-            request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
-        }
+            {
+                request.setAttribute("GoodSearch", "false");
+                request.setAttribute("SelectedSearchResults", SelectedSearchResults);
+                request.getRequestDispatcher("SearchWalmart.jsp").forward(request, response);
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
