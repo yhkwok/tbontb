@@ -118,7 +118,7 @@ public class viewPoll extends HttpServlet {
                      int score = Integer.parseInt(rs.getString("score"));
                      System.out.println(score);
                      //p.setVotes(score);
-                     Product p = new Product(id, buyLink, imageLink, description, name, price, score, userPollID);
+                     Product p = new Product(buyLink, imageLink, description, name, price, score);
                      products.add(p);
                 }
                 
